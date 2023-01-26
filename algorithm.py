@@ -15,7 +15,7 @@ def random_algorithm(board, game):
         if possibilities == 0:
             return False
         temp_board = deepcopy(board)
-        draw_posibilities(game, temp_board, piece, possibilities)
+        # draw_posibilities(game, temp_board, piece, possibilities)
         if possibilities < min_posibilities:
             min_posibilities = possibilities
             choosen_piece = piece

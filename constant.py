@@ -1,10 +1,16 @@
 BASE = 3
 ROWS, COLS = BASE*BASE, BASE*BASE
 WIDTH, HEIGHT = BASE*200, BASE*200
-LEVEL_PARAM_1 = 2
+# LEVEL_PARAM_1 < LEVEL_PARAM_2 !!!
+# the quotient LEVEL_PARAM_1/LEVEL_PARAM_2 is greater but less than 1, the greater the level of difficulty
+LEVEL_PARAM_1 = 1
 LEVEL_PARAM_2 = 4
 
 SQUARE_SIZE = WIDTH // COLS
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+
+# ACO
+ANT_STEP_RANGE = 4
+NUMBER_OF_ANTS = 30
