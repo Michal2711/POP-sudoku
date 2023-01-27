@@ -4,6 +4,7 @@ from copy import deepcopy
 from constant import ROWS, SQUARE_SIZE, COLS, WHITE, BLACK, HEIGHT, BASE, LEVEL_PARAM_1, LEVEL_PARAM_2
 from random import sample
 from piece import Piece
+from typing import List
 
 
 class Board:
@@ -191,3 +192,51 @@ class Board:
                     return False
 
         return True
+
+
+class Sudoku(Board):
+    def get_sudoku_pieces(self) -> List[Piece]:
+        pieces = []
+        for row in self.board:
+            new_row = []
+            for piece in row:
+                if piece.number is not None:
+                    new_row.append(piece)
+            pieces.append(new_row)
+        return pieces
+
+    def get_row_pieces(self, piece: Piece) -> List[Piece]:
+        sudoku_pieces = self.get_sudoku_pieces()
+        for row in sudoku_pieces:
+            if piece in row:
+                return row
+
+    def get_column_pieces(self, piece: Piece) -> List[Piece]:
+        sudoku_pieces = self.get_sudoku_pieces()
+        column_idx = sudoku_pieces.index(piece)
+
+        column_pieces = [row[column_idx] for row in sudoku_pieces]
+        return column_pieces
+
+    def checK_piece(self, piece: Piece) -> bool:
+        row_pieces = self.get_row_pieces(piece=piece)
+        column_pieces = self.get_column_pieces(piece=piece)
+
+        row_values = [piece.value for piece in row_pieces]
+        column_values = [piece.value for piece in column_pieces]
+
+        if piece.value not in (row_values, column_values):
+            return True
+        else:
+            return False
+
+    def get_possibile_pieces(self, sudoku_size: int) -> List:
+        empty_pieces = self.get_all_empty_pieces()
+
+        possible_pieces = []
+        for empty_piece in empty_pieces:
+            for value in range(10):
+                piece_copy = deepcopy(empty_piece)
+                piece_copy.value = value
+                if self.checK_piece(piece=piece_copy):
+                    possible_pieces.append(piece_copy)

@@ -4,7 +4,7 @@ import pygame
 import random
 from typing import List, Tuple
 
-from ..board import Board
+from ..board import Sudoku
 from ..game import Game
 
 """
@@ -17,17 +17,30 @@ while sudoku is not solved:
 """
 
 class Bee():
-    def __init__(self, position: Tuple[int], cost: int) -> None:
+    def __init__(self, position: Tuple[int], cost: int, board: Sudoku) -> None:
         self.position = position
         self.cost = cost
+        self.board = deepcopy(board)
+
+    def move(self, value):
+        self.board.move(row=self.position(0), col=self.position(1), number=value)
 
 
 def initialize_random_bee(board: Board, game: Game) -> List[Bee]:
-    random_bee = Bee(position=(random.randint(0, 9), random.randint(0, 9)), cost=0)
+    cost = board.get_all_empty_pieces()
+    possible_pieces = board.get_possibile_pieces(sudoku_size)
+    random_piece = random.choice(possible_pieces)
+    random_bee = Bee(position=(random_piece.row, random_piece.col), cost=len(possible_pieces), board=board)
+    random_bee.move(value=random_piece.value)
     return random_bee
 
+
 def create_neighbour(bee: Bee) -> Bee:
-    pass
+    possible_pieces = self.board.get_possibile_pieces()
+    random_piece = random.choice(possible_pieces)
+    neighbour_bee = Bee(position=(random_piece.row, random_piece.col), cost=len(possible_pieces), board=board)
+    neighbour_bee.move(value=random_piece.value)
+    return neighbour_bee
 
 
 def evalute_bees(bees: List[Bee], bees_amount: int) -> List[Bee]:
@@ -35,7 +48,7 @@ def evalute_bees(bees: List[Bee], bees_amount: int) -> List[Bee]:
     return sorted_bees if len(bees) <= bees_amount else sorted_bees[bees_amount]
 
 
-def bees_algorithm(board: Board, game: Game, max_iterations: int, population_size: int) -> bool:
+def bees_algorithm(board: Sudoku, game: Game, max_iterations: int, population_size: int) -> bool:
     min_poss = 9
     empty_pieces = board.get_all_empty_pieces()
 
@@ -53,6 +66,7 @@ def bees_algorithm(board: Board, game: Game, max_iterations: int, population_siz
 
     for _ in range(max_iterations):
         for bee in best_bees:
+
             bee_neighbour = create_neighbour(bee=bee)
             if bee_neighbour.cost < bee.cost:
                 bee = deepcopy(bee_neighbour)
@@ -70,19 +84,9 @@ def bees_algorithm(board: Board, game: Game, max_iterations: int, population_siz
                 if best_bee.cost > bee.cost:
                     best_bee = bee
 
-    pygame.time.delay(300)
-    board.move(bee.position[0], bee.position[1], number=0) #TODO: change number value
-
-    return True
+    return best_bee
 
 
 if __name__ == "__main__":
     pygame.font.init()
     number_font = pygame.font.SysFont(None, 25)
-
-
-
-    
-
-    
-
