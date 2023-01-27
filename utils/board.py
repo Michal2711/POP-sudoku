@@ -1,9 +1,9 @@
 import pygame
 import numpy as np
 from copy import deepcopy
-from constant import ROWS, SQUARE_SIZE, COLS, WHITE, BLACK, HEIGHT, BASE, LEVEL_PARAM_1, LEVEL_PARAM_2
+from .constant import ROWS, SQUARE_SIZE, COLS, WHITE, BLACK, HEIGHT, BASE, LEVEL_PARAM_1, LEVEL_PARAM_2
 from random import sample
-from piece import Piece
+from .piece import Piece
 from boards_test.test_boards import get_board
 from typing import List
 

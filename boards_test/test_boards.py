@@ -1,4 +1,4 @@
-from constant import TEST_BOARD_NUMBER
+from utils.constant import TEST_BOARD_NUMBER
 
 
 board_level_10 = [

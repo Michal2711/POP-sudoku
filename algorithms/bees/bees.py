@@ -4,18 +4,9 @@ import pygame
 import random
 from typing import List, Tuple
 
-from board import Board
-from game import Game
+from utils.board import Board
+from utils.game import Game
 
-"""
-;
-while sudoku is not solved:
-    initialize randomly scout bees
-    evaluate bees cells; //from heuristic function
-    select bees with high fitnesses;
-    go to selected bees cells;
-    search through selected bees cells with remaining bees;
-"""
 
 class Bee():
     def __init__(self, position: Tuple[int], cost: int, board: Board) -> None:
@@ -110,8 +101,3 @@ def bees_algorithm(board: Board, game: Game, max_iterations: int, population_siz
         game.update()
         
     return best_bee
-
-
-if __name__ == "__main__":
-    pygame.font.init()
-    number_font = pygame.font.SysFont(None, 25)
