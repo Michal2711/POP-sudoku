@@ -102,4 +102,3 @@ class Ant:
             )
         )
         pygame.display.update()
-        # pygame.time.delay(500)

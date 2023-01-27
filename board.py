@@ -22,19 +22,9 @@ class Board:
         self.filled_fields = 0
 
     def create_board(self):
-        # self.generate_full_board()
-        # self.final_board = deepcopy(self.board)
-        # self.delete_part_board()
-
         board_pieces = []
 
         self.board = get_board()
-
-        # for row in range(ROWS):
-        #     board_pieces.append([])
-        #     for col in range(COLS):
-        #         board_pieces[row].append(Piece(row, col, None))
-        # self.board = board_pieces
 
         for row in range(ROWS):
             board_pieces.append([])
