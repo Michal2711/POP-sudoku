@@ -30,10 +30,19 @@ class Board:
 
         self.board = get_board()
 
+        # for row in range(ROWS):
+        #     board_pieces.append([])
+        #     for col in range(COLS):
+        #         board_pieces[row].append(Piece(row, col, None))
+        # self.board = board_pieces
+
         for row in range(ROWS):
             board_pieces.append([])
             for col in range(COLS):
-                board_pieces[row].append(Piece(row, col, None))
+                if self.board[row][col] != 0:
+                    board_pieces[row].append(Piece(row, col, self.board[row][col]))
+                else:
+                    board_pieces[row].append(Piece(row, col, None))
         self.board = board_pieces
 
         for row in range(ROWS):

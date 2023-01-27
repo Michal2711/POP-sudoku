@@ -17,7 +17,7 @@ def solve_sudoku():
     clock = pygame.time.Clock()
     game = Game(WIN)
 
-    game.board = create_test_board(elements=board_level_20, board=game.get_board())
+    # game.board = create_test_board(elements=board_level_20, board=game.get_board())
 
     game.update()
 

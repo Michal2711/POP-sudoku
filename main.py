@@ -1,10 +1,12 @@
 import pygame
 import time
 from algorithm import random_algorithm
+from boards_test.test_boards import get_board
 from constant import WIDTH, HEIGHT, SQUARE_SIZE, NUMBER_OF_ANTS
 from game import Game
 from ant_algorithm import ACO
 from ant import Ant
+# from tests_boards.create_board import create_board
 
 FPS = 60
 
@@ -25,6 +27,8 @@ def main():
     clock = pygame.time.Clock()
     start_time = time.time()
     game = Game(WIN)
+
+    # game.board = get_board()
 
     while run:
         clock.tick(FPS)

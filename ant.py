@@ -34,16 +34,11 @@ class Ant:
         if len(possible_keys) > 1:
             freq_prob = []
             choosen_number = 0
-            # min_freq = ROWS
             for number in possible_keys:
                 freq = self.calculate_freq_number(number)
                 freq_prob.append(ROWS - freq)
-                # if freq < min_freq:
-                #     min_freq = freq
-                #     choosen_number = number
-            # print(freq_prob)
+
             freq_prob = [prob/sum(freq_prob) for prob in freq_prob]
-            # print(freq_prob)
             choosen_number = random.choices(possible_keys, weights=freq_prob, k=1)[0]
 
         else:
