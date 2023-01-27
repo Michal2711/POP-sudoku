@@ -32,16 +32,23 @@ class Ant:
         possible_keys = [k for k, v in best.get_feromone_numbers_level().items() if v == possible_fer]
 
         if len(possible_keys) > 1:
+            freq_prob = []
             choosen_number = 0
-            min_freq = ROWS
+            # min_freq = ROWS
             for number in possible_keys:
                 freq = self.calculate_freq_number(number)
-                if freq < min_freq:
-                    min_freq = freq
-                    choosen_number = number
+                freq_prob.append(ROWS - freq)
+                # if freq < min_freq:
+                #     min_freq = freq
+                #     choosen_number = number
+            # print(freq_prob)
+            freq_prob = [prob/sum(freq_prob) for prob in freq_prob]
+            # print(freq_prob)
+            choosen_number = random.choices(possible_keys, weights=freq_prob, k=1)[0]
+
         else:
             choosen_number = possible_keys[0]
-        
+
         self.board.move(best.row, best.col, choosen_number)
         self.current_position = [best.row, best.col]
 
@@ -73,7 +80,7 @@ class Ant:
         counter = 0
         for r in range(ROWS):
             for c in range(COLS):
-                if self.board.get_piece(r, c) is not None and self.board.get_piece(r, c) == number:
+                if self.board.get_piece(r, c) is not None and self.board.get_piece(r, c).number == number:
                     counter += 1
         return counter
 

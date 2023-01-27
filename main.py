@@ -1,8 +1,8 @@
 import pygame
 import time
 from algorithm import random_algorithm
-from boards_test.create_board import create_board
-from boards_test.pieces import easy_pieces, medium_pieces, hard_pieces
+# from boards_test.create_board import create_board
+# from boards_test.pieces import easy_pieces, medium_pieces, hard_pieces
 from constant import WIDTH, HEIGHT, SQUARE_SIZE, NUMBER_OF_ANTS
 from game import Game
 from ant_algorithm import ACO
@@ -64,7 +64,7 @@ def main():
             result = game.board.check_is_board_valid()
             print(f"Is board valid: {result}")
             print("--- %s seconds ---" % (time.time() - start_time))
-            pygame.time.delay(5000)
+            # pygame.time.delay(5000)
             run = False
 
     pygame.quit()
