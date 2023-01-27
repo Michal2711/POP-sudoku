@@ -1,7 +1,6 @@
 import random
 
-import numpy as np
-from constant import BASE, ROWS, COLS, ANT_STEP_RANGE, WHITE
+from constant import ROWS, COLS, ANT_STEP_RANGE, WHITE
 from copy import deepcopy
 
 import pygame
@@ -16,7 +15,6 @@ class Ant:
         self.current_position = self.get_random_start_position()
         self.previous_position = self.current_position
         self.ants = ants
-        # self.number_frequency = {i: 0 for i in range(1, ROWS + 1)}
         self.game = game
         self.color = (random.randint(1, 255), random.randint(1, 255), random.randint(1, 255))
 
@@ -36,20 +34,13 @@ class Ant:
         self.current_position = [best.row, best.col]
 
         # update feromone lever after each move
-
-        # print(f"best: {best}")
-
         self.update_feromone_level(best, choosen_number)
-        return quality  # im mniejsza wartość tym lepsze, najlepiej 1
+        return quality
 
     def update_feromone_level(self, piece, number):
         piece.get_feromone_numbers_level()[number] += 1/self.quality_move
-        # piece.feromone_level += 1 / self.quality_move
-        for idx, ant in enumerate(self.ants):
+        for ant in self.ants:
             if ant != self:
-                # print(f"ant: {idx}  {ant.board.get_piece(piece.row, piece.col)}")
-                # print(f"feromone_level: {ant.board.get_piece(piece.row, piece.col).get_feromone_numbers_level()}")
-                # print(f"choosen number: {number}")
                 if number in ant.board.get_piece(piece.row, piece.col).get_feromone_numbers_level().keys():
                     ant.board.get_piece(piece.row, piece.col).get_feromone_numbers_level()[number] += 1 / self.quality_move
 
@@ -57,8 +48,6 @@ class Ant:
         potential_moves = self.get_all_moves()
 
         potential_moves.sort(key=lambda x: len(x.get_valid_numbers()), reverse=False)
-
-        # print(f"potential_moves: {potential_moves}")
 
         if potential_moves:
             best = potential_moves[0]

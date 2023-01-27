@@ -1,6 +1,5 @@
 import pygame
 from algorithm import random_algorithm
-from copy import deepcopy
 from constant import WIDTH, HEIGHT, SQUARE_SIZE, NUMBER_OF_ANTS
 from game import Game
 from ant_algorithm import ACO
@@ -39,8 +38,6 @@ def main():
         if new_board is None:
             print("Nie udało się rozwiązać sudoku")
             run = False
-            pygame.time.delay(5000)
-            pygame.quit()
         else:
             game.board = new_board
 
@@ -63,7 +60,7 @@ def main():
         if(len(game.get_board().get_all_empty_pieces()) == 0):
             result = game.board.check_is_board_valid()
             print(f"Is board valid: {result}")
-            print(f"Is board same as generated {game.board.check_is_board_same()}")
+            # print(f"Is board same as generated {game.board.check_is_board_same()}")
             pygame.time.delay(5000)
             run = False
 

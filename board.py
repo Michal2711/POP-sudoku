@@ -4,6 +4,7 @@ from copy import deepcopy
 from constant import ROWS, SQUARE_SIZE, COLS, WHITE, BLACK, HEIGHT, BASE, LEVEL_PARAM_1, LEVEL_PARAM_2
 from random import sample
 from piece import Piece
+from boards_test.test_boards import get_board
 
 
 class Board:
@@ -20,11 +21,13 @@ class Board:
         self.filled_fields = 0
 
     def create_board(self):
-        self.generate_full_board()
-        self.final_board = deepcopy(self.board)
-        self.delete_part_board()
+        # self.generate_full_board()
+        # self.final_board = deepcopy(self.board)
+        # self.delete_part_board()
 
         board_pieces = []
+
+        self.board = get_board()
 
         for row in range(ROWS):
             board_pieces.append([])
