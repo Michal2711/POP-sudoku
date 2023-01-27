@@ -1,5 +1,6 @@
 import pygame
 from algorithm import random_algorithm
+from copy import deepcopy
 from constant import WIDTH, HEIGHT, SQUARE_SIZE, NUMBER_OF_ANTS
 from game import Game
 from ant_algorithm import ACO
@@ -31,14 +32,14 @@ def main():
 
         ants = []
         for _ in range(NUMBER_OF_ANTS):
-            ants.append(Ant(game.board, ants))
+            ants.append(Ant(game.get_board(), ants, game))
 
         # is_move_ok = random_algorithm(game.get_board(), game)
         new_board = ACO(ants)
         if new_board is None:
             print("Nie udało się rozwiązać sudoku")
             run = False
-            pygame.time.delay(10000)
+            pygame.time.delay(5000)
             pygame.quit()
         else:
             game.board = new_board
@@ -53,7 +54,7 @@ def main():
         if game.result is not None:
             print(game.result)
             game.update()
-            # pygame.time.delay(2000)
+            pygame.time.delay(2000)
             run = False
 
         if run is True:
@@ -63,7 +64,7 @@ def main():
             result = game.board.check_is_board_valid()
             print(f"Is board valid: {result}")
             print(f"Is board same as generated {game.board.check_is_board_same()}")
-            pygame.time.delay(10000)
+            pygame.time.delay(5000)
             run = False
 
     pygame.quit()

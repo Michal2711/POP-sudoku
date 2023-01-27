@@ -69,6 +69,7 @@ class Board:
 
     def move(self, row, col, number):
         self.board[row][col] = Piece(row, col, number)
+        self.filled_fields += 1
         self.update_valid_numbers(self.board[row][col])
 
     def update_valid_numbers(self, piece):
@@ -78,10 +79,12 @@ class Board:
         for c in range(COLS):
             if self.board[row][c].number is None and piece.number in self.board[row][c].valid_numbers:
                 self.board[row][c].valid_numbers.remove(piece.number)
+                self.board[row][c].feromone_numbers_level.pop(piece.number)
 
         for r in range(ROWS):
             if self.board[r][col].number is None and piece.number in self.board[r][col].valid_numbers:
                 self.board[r][col].valid_numbers.remove(piece.number)
+                self.board[r][col].feromone_numbers_level.pop(piece.number)
 
         start_row = row - (row % BASE)
         start_col = col - (col % BASE)
@@ -92,6 +95,7 @@ class Board:
             for c in range(start_col, end_col + 1):
                 if self.board[r][c].number is None and piece.number in self.board[r][c].valid_numbers:
                     self.board[r][c].valid_numbers.remove(piece.number)
+                    self.board[r][c].feromone_numbers_level.pop(piece.number)
 
     def get_piece(self, row, col):
         return self.board[row][col]
@@ -148,6 +152,8 @@ class Board:
             for c in range(start_col, end_col + 1):
                 if self.board[r][c].number is not None and self.board[r][c].number in piece.valid_numbers:
                     piece.valid_numbers.remove(self.board[r][c].number)
+
+        piece.feromone_numbers_level = dict.fromkeys(piece.valid_numbers, 1/len(piece.valid_numbers))
 
     def check_is_piece_valid(self, piece):
         r = piece.row
