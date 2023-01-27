@@ -1,5 +1,5 @@
 import pygame
-from constant import SQUARE_SIZE, BLACK, WHITE, BASE
+from .constant import SQUARE_SIZE, BLACK, WHITE, BASE
 
 pygame.font.init()
 number_font = pygame.font.SysFont(None, 25)
