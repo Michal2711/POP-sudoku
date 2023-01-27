@@ -200,3 +200,8 @@ class Board:
                 piece_copy.number = value
                 possible_pieces.append(piece_copy)
         return possible_pieces
+
+    def get_row_piece_duplicates(self, piece: Piece) -> List[Piece]:
+        row_idx = piece.row
+        row_pieces = self.board[row_idx]
+        
