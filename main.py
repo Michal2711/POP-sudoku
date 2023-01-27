@@ -1,8 +1,6 @@
 import pygame
 import time
 from algorithm import random_algorithm
-# from boards_test.create_board import create_board
-# from boards_test.pieces import easy_pieces, medium_pieces, hard_pieces
 from constant import WIDTH, HEIGHT, SQUARE_SIZE, NUMBER_OF_ANTS
 from game import Game
 from ant_algorithm import ACO
