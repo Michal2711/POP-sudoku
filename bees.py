@@ -42,10 +42,11 @@ def create_neighbour(bee: Bee) -> Bee:
     possible_pieces = bee.board.get_possibile_pieces()
     empty_pieces = bee.board.get_all_empty_pieces()
     if possible_pieces:
-        random_piece = random.choice(possible_pieces)
+        sorted_pieces = sorted(possible_pieces, key=lambda piece: abs(bee.position[0] - piece.row) + abs(bee.position[1] - piece.col))
+        piece = sorted_pieces[0]
         
-        neighbour_bee = Bee(position=(random_piece.row, random_piece.col), cost=len(empty_pieces) * len(random_piece.valid_numbers), board=bee.board)
-        neighbour_bee.move(value=random_piece.number)
+        neighbour_bee = Bee(position=(piece.row, piece.col), cost=len(empty_pieces) * len(piece.valid_numbers), board=bee.board)
+        neighbour_bee.move(value=piece.number)
         return neighbour_bee
     return None
 
