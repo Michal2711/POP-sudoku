@@ -4,6 +4,7 @@ from copy import deepcopy
 from constant import ROWS, SQUARE_SIZE, COLS, WHITE, BLACK, HEIGHT, BASE, LEVEL_PARAM_1, LEVEL_PARAM_2
 from random import sample
 from piece import Piece
+from test_boards import get_board
 
 
 class Board:
@@ -13,6 +14,7 @@ class Board:
         :param final_board: board that include generated version of board
         :param filled_fields: number of filled field of current board
     """
+
     def __init__(self):
         self.board = []
         self.final_board = []
@@ -20,17 +22,20 @@ class Board:
         self.filled_fields = 0
 
     def create_board(self):
-        self.generate_full_board()
-        self.final_board = deepcopy(self.board)
-        self.delete_part_board()
+        # self.generate_full_board()
+        # self.final_board = deepcopy(self.board)
+        # self.delete_part_board()
 
         board_pieces = []
+
+        self.board = get_board()
 
         for row in range(ROWS):
             board_pieces.append([])
             for col in range(COLS):
                 if self.board[row][col] != 0:
-                    board_pieces[row].append(Piece(row, col, self.board[row][col]))
+                    board_pieces[row].append(
+                        Piece(row, col, self.board[row][col]))
                 else:
                     board_pieces[row].append(Piece(row, col, None))
         self.board = board_pieces
@@ -40,16 +45,21 @@ class Board:
                 if self.board[row][col].number is None:
                     self.calculate_valid_numbers(self.board[row][col])
                 else:
-                    self.board[row][col].valid_numbers = [self.board[row][col].number]
+                    self.board[row][col].valid_numbers = [
+                        self.board[row][col].number]
 
     def draw_squares(self, win):
         win.fill(WHITE)
         for row in range(ROWS-1):
-            if(row % BASE == BASE - 1):
-                pygame.draw.line(win, BLACK, (0, row*SQUARE_SIZE + SQUARE_SIZE), (HEIGHT, row*SQUARE_SIZE + SQUARE_SIZE), 4)
-                pygame.draw.line(win, BLACK, (row*SQUARE_SIZE + SQUARE_SIZE, 0), (row*SQUARE_SIZE + SQUARE_SIZE, HEIGHT), 4)
-            pygame.draw.line(win, BLACK, (0, row*SQUARE_SIZE + SQUARE_SIZE), (HEIGHT, row*SQUARE_SIZE + SQUARE_SIZE), 1)
-            pygame.draw.line(win, BLACK, (row*SQUARE_SIZE + SQUARE_SIZE, 0), (row*SQUARE_SIZE + SQUARE_SIZE, HEIGHT), 1)
+            if (row % BASE == BASE - 1):
+                pygame.draw.line(win, BLACK, (0, row*SQUARE_SIZE + SQUARE_SIZE),
+                                 (HEIGHT, row*SQUARE_SIZE + SQUARE_SIZE), 4)
+                pygame.draw.line(win, BLACK, (row*SQUARE_SIZE + SQUARE_SIZE, 0),
+                                 (row*SQUARE_SIZE + SQUARE_SIZE, HEIGHT), 4)
+            pygame.draw.line(win, BLACK, (0, row*SQUARE_SIZE + SQUARE_SIZE),
+                             (HEIGHT, row*SQUARE_SIZE + SQUARE_SIZE), 1)
+            pygame.draw.line(win, BLACK, (row*SQUARE_SIZE + SQUARE_SIZE, 0),
+                             (row*SQUARE_SIZE + SQUARE_SIZE, HEIGHT), 1)
 
     def get_all_pieces(self):
         pieces = []
@@ -69,6 +79,7 @@ class Board:
 
     def move(self, row, col, number):
         self.board[row][col] = Piece(row, col, number)
+        self.filled_fields += 1
         self.update_valid_numbers(self.board[row][col])
 
     def update_valid_numbers(self, piece):
@@ -78,10 +89,12 @@ class Board:
         for c in range(COLS):
             if self.board[row][c].number is None and piece.number in self.board[row][c].valid_numbers:
                 self.board[row][c].valid_numbers.remove(piece.number)
+                self.board[row][c].feromone_numbers_level.pop(piece.number)
 
         for r in range(ROWS):
             if self.board[r][col].number is None and piece.number in self.board[r][col].valid_numbers:
                 self.board[r][col].valid_numbers.remove(piece.number)
+                self.board[r][col].feromone_numbers_level.pop(piece.number)
 
         start_row = row - (row % BASE)
         start_col = col - (col % BASE)
@@ -92,6 +105,7 @@ class Board:
             for c in range(start_col, end_col + 1):
                 if self.board[r][c].number is None and piece.number in self.board[r][c].valid_numbers:
                     self.board[r][c].valid_numbers.remove(piece.number)
+                    self.board[r][c].feromone_numbers_level.pop(piece.number)
 
     def get_piece(self, row, col):
         return self.board[row][col]
@@ -112,8 +126,10 @@ class Board:
 
     def generate_full_board(self):
         rBase = range(BASE)
-        rows = [g*BASE + r for g in self.shuffle(rBase) for r in self.shuffle(rBase)]
-        cols = [g*BASE + c for g in self.shuffle(rBase) for c in self.shuffle(rBase)]
+        rows = [g*BASE + r for g in self.shuffle(rBase)
+                for r in self.shuffle(rBase)]
+        cols = [g*BASE + c for g in self.shuffle(rBase)
+                for c in self.shuffle(rBase)]
         nums = self.shuffle(range(1, BASE*BASE+1))
 
         self.board = [[nums[self.pattern(r, c)] for c in cols] for r in rows]
@@ -149,6 +165,9 @@ class Board:
                 if self.board[r][c].number is not None and self.board[r][c].number in piece.valid_numbers:
                     piece.valid_numbers.remove(self.board[r][c].number)
 
+        piece.feromone_numbers_level = dict.fromkeys(
+            piece.valid_numbers, 1/len(piece.valid_numbers))
+
     def check_is_piece_valid(self, piece):
         r = piece.row
         c = piece.col
@@ -180,14 +199,15 @@ class Board:
         transpose_board = np.array(transpose_board).T.tolist()
         for r in range(ROWS):
             potential_correct_row = [piece.number for piece in self.board[r]]
-            potential_T_correct_row = [piece.number for piece in transpose_board[r]]
+            potential_T_correct_row = [
+                piece.number for piece in transpose_board[r]]
             potential_correct_row.sort()
             potential_T_correct_row.sort()
             if potential_correct_row != correct or potential_T_correct_row != correct:
                 return False
         for r in range(0, ROWS, BASE):
             for c in range(0, COLS, BASE):
-                if(self.is_square_valid(r, c, correct) is False):
+                if (self.is_square_valid(r, c, correct) is False):
                     return False
 
         return True
