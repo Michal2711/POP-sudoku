@@ -28,8 +28,6 @@ def main():
     start_time = time.time()
     game = Game(WIN)
 
-    # game.board = get_board()
-
     while run:
         clock.tick(FPS)
 
@@ -37,7 +35,6 @@ def main():
         for _ in range(NUMBER_OF_ANTS):
             ants.append(Ant(game.get_board(), ants, game))
 
-        # is_move_ok = random_algorithm(game.get_board(), game)
         new_board = ACO(ants)
         if new_board is None:
             pygame.time.delay(2000)
@@ -46,9 +43,6 @@ def main():
         else:
             game.board = new_board
 
-        # if is_move_ok is False:
-        #     run = False
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -56,7 +50,6 @@ def main():
         if game.result is not None:
             print(game.result)
             game.update()
-            # pygame.time.delay(2000)
             run = False
 
         if run is True:
@@ -66,7 +59,6 @@ def main():
             result = game.board.check_is_board_valid()
             print(f"Is board valid: {result}")
             print("--- %s seconds ---" % (time.time() - start_time))
-            # pygame.time.delay(5000)
             run = False
 
     pygame.quit()
