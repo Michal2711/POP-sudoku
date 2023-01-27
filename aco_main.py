@@ -1,7 +1,6 @@
 import pygame
 import time
-from boards_test.test_boards import get_board
-from utils.constant import WIDTH, HEIGHT, SQUARE_SIZE, NUMBER_OF_ANTS
+from utils.constant import WIDTH, HEIGHT, NUMBER_OF_ANTS
 from utils.game import Game
 from algorithms.aco.ant_algorithm import ACO
 from algorithms.aco.ant import Ant
