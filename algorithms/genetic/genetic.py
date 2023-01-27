@@ -1,6 +1,7 @@
 from utils.board import Board
 import numpy as np
 from utils.piece import Piece
+from utils.constant import CROSS_CHANCE, MUTATION_CHANCE, POPULATION_SIZE
 from math import factorial as fact
 import random
 import time
@@ -10,10 +11,6 @@ from copy import deepcopy
 numbers = {'1': '1', '2': '2', '3': '3',
            '4': '4', '5': '5', '6': '6',
            '7': '7', '8': '8', '9': '9'}
-
-CROSS_CHANCE = 0.4
-MUTATION_CHANCE = 0.2
-POPULATION_SIZE = 50
 
 
 def flatten_board(board: np.array):
