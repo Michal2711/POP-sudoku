@@ -18,7 +18,7 @@ def solve_sudoku():
     game = Game(WIN)
 
     game.board = create_test_board(elements=board_level_20, board=game.get_board())
-    
+
     game.update()
 
     start_time = time.time()
@@ -26,7 +26,7 @@ def solve_sudoku():
     best_bee = bees_algorithm(
             board=game.get_board(),
             game=game,
-            max_iterations=100, 
+            max_iterations=100,
             population_size=10,
             bee_moves=1
     )

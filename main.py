@@ -1,7 +1,10 @@
 import pygame
-from constant import WIDTH, HEIGHT, SQUARE_SIZE
-from game import Game
+import time
 from algorithm import random_algorithm
+from constant import WIDTH, HEIGHT, SQUARE_SIZE, NUMBER_OF_ANTS
+from game import Game
+from ant_algorithm import ACO
+from ant import Ant
 
 FPS = 60
 
@@ -20,15 +23,27 @@ def main():
 
     run = True
     clock = pygame.time.Clock()
+    start_time = time.time()
     game = Game(WIN)
 
     while run:
         clock.tick(FPS)
 
-        is_move_ok = random_algorithm(game.get_board(), game)
+        ants = []
+        for _ in range(NUMBER_OF_ANTS):
+            ants.append(Ant(game.get_board(), ants, game))
 
-        if is_move_ok is False:
+        # is_move_ok = random_algorithm(game.get_board(), game)
+        new_board = ACO(ants)
+        if new_board is None:
+            pygame.time.delay(2000)
+            print("Nie udało się rozwiązać sudoku")
             run = False
+        else:
+            game.board = new_board
+
+        # if is_move_ok is False:
+        #     run = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -37,7 +52,7 @@ def main():
         if game.result is not None:
             print(game.result)
             game.update()
-            pygame.time.delay(5000)
+            # pygame.time.delay(2000)
             run = False
 
         if run is True:
@@ -45,12 +60,9 @@ def main():
 
         if(len(game.get_board().get_all_empty_pieces()) == 0):
             result = game.board.check_is_board_valid()
-            # print("------------")
-            # print(game.get_board().final_board)
-            # print("------------")
-            print(result)
-            print(game.board.check_is_board_same())
-            pygame.time.delay(10000)
+            print(f"Is board valid: {result}")
+            print("--- %s seconds ---" % (time.time() - start_time))
+            # pygame.time.delay(5000)
             run = False
 
     pygame.quit()

@@ -20,6 +20,8 @@ class Piece:
         self.col = col
         self.number = number
         self.valid_numbers = [number for number in range(1, BASE*BASE + 1)]
+        self.feromone_numbers_level = dict()
+        self.weight = 0
 
         self.x = 0
         self.y = 0
@@ -31,6 +33,9 @@ class Piece:
 
     def get_valid_numbers(self):
         return self.valid_numbers
+
+    def get_feromone_numbers_level(self):
+        return self.feromone_numbers_level
 
     def draw(self, win):
         if self.number != 0:
