@@ -28,8 +28,20 @@ class Ant:
         if best is None or len(best.get_valid_numbers()) == 0:
             return None
 
-        choosen_number = sorted(best.get_feromone_numbers_level().items(), key=lambda x: x[1], reverse=True)[0][0]
+        possible_fer = max(best.get_feromone_numbers_level().values())
+        possible_keys = [k for k, v in best.get_feromone_numbers_level().items() if v == possible_fer]
 
+        if len(possible_keys) > 1:
+            choosen_number = 0
+            min_freq = ROWS
+            for number in possible_keys:
+                freq = self.calculate_freq_number(number)
+                if freq < min_freq:
+                    min_freq = freq
+                    choosen_number = number
+        else:
+            choosen_number = possible_keys[0]
+        
         self.board.move(best.row, best.col, choosen_number)
         self.current_position = [best.row, best.col]
 
@@ -57,6 +69,14 @@ class Ant:
         else:
             return None, None
 
+    def calculate_freq_number(self, number):
+        counter = 0
+        for r in range(ROWS):
+            for c in range(COLS):
+                if self.board.get_piece(r, c) is not None and self.board.get_piece(r, c) == number:
+                    counter += 1
+        return counter
+
     def get_all_moves(self):
         moves = []
         row_min = max(self.current_position[0] - ANT_STEP_RANGE, 0)
@@ -80,4 +100,4 @@ class Ant:
             )
         )
         pygame.display.update()
-        pygame.time.delay(500)
+        # pygame.time.delay(500)

@@ -21,7 +21,6 @@ class Piece:
         self.number = number
         self.valid_numbers = [number for number in range(1, BASE*BASE + 1)]
         self.feromone_numbers_level = dict()
-        # self.feromone_level = 0
         self.weight = 0
 
         self.x = 0
