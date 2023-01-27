@@ -5,6 +5,7 @@ from constant import ROWS, SQUARE_SIZE, COLS, WHITE, BLACK, HEIGHT, BASE, LEVEL_
 from random import sample
 from piece import Piece
 from boards_test.test_boards import get_board
+from typing import List
 
 
 class Board:
@@ -32,10 +33,7 @@ class Board:
         for row in range(ROWS):
             board_pieces.append([])
             for col in range(COLS):
-                if self.board[row][col] != 0:
-                    board_pieces[row].append(Piece(row, col, self.board[row][col]))
-                else:
-                    board_pieces[row].append(Piece(row, col, None))
+                board_pieces[row].append(Piece(row, col, None))
         self.board = board_pieces
 
         for row in range(ROWS):
@@ -200,3 +198,14 @@ class Board:
                     return False
 
         return True
+
+    def get_possibile_pieces(self) -> List:
+        empty_pieces = self.get_all_empty_pieces()
+
+        possible_pieces = []
+        for empty_piece in empty_pieces:
+            for value in empty_piece.valid_numbers:
+                piece_copy = deepcopy(empty_piece)
+                piece_copy.number = value
+                possible_pieces.append(piece_copy)
+        return possible_pieces
