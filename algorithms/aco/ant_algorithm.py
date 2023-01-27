@@ -1,4 +1,4 @@
-from utils.constant import ROWS
+from utils.constant import COLS, ROWS
 import pygame
 
 pygame.font.init()

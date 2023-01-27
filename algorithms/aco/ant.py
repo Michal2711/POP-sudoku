@@ -1,6 +1,6 @@
 import random
 
-from utils.constant import ROWS, COLS, ANT_STEP_RANGE, WHITE
+from utils.constant import ROWS, COLS, ANT_STEP_RANGE
 from copy import deepcopy
 
 import pygame
