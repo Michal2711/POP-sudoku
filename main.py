@@ -1,24 +1,14 @@
 import pygame
 import time
-from algorithm import random_algorithm
-from boards_test.test_boards import get_board
-from constant import WIDTH, HEIGHT, SQUARE_SIZE, NUMBER_OF_ANTS
+from constant import WIDTH, HEIGHT, NUMBER_OF_ANTS
 from game import Game
 from ant_algorithm import ACO
 from ant import Ant
-# from tests_boards.create_board import create_board
 
 FPS = 60
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Sudoku')
-
-
-def get_row_col_from_mouse(pos):
-    x, y = pos
-    row = y // SQUARE_SIZE
-    col = x // SQUARE_SIZE
-    return row, col
 
 
 def main():
@@ -31,14 +21,16 @@ def main():
     while run:
         clock.tick(FPS)
 
+        # generate ants
         ants = []
         for _ in range(NUMBER_OF_ANTS):
-            ants.append(Ant(game.get_board(), ants, game))
+            ants.append(Ant(game.get_board(), ants))
 
+        # getting best ant board from algorithm
         new_board = ACO(ants)
         if new_board is None:
             pygame.time.delay(2000)
-            print("Nie udało się rozwiązać sudoku")
+            print("Failed to solve sudoku")
             run = False
         else:
             game.board = new_board

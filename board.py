@@ -22,6 +22,10 @@ class Board:
         self.filled_fields = 0
 
     def create_board(self):
+        # only to generate new board
+        # self.generate_full_board()
+        # self.final_board = deepcopy(self.board)
+        # self.delete_part_board()
         board_pieces = []
 
         self.board = get_board()
