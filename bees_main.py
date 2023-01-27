@@ -2,6 +2,8 @@ import pygame
 from constant import WIDTH, HEIGHT, SQUARE_SIZE
 from game import Game
 from bees import bees_algorithm
+from tests_boards.create_board import create_board
+from tests_boards.pieces import easy_pieces, medium_pieces, hard_pieces
 
 FPS = 60
 
@@ -16,26 +18,26 @@ def get_row_col_from_mouse(pos):
     return row, col
 
 
-def main():
-
+def solve_easy_sudoku():
     run = True
     clock = pygame.time.Clock()
     game = Game(WIN)
 
+    game.board = create_board(pieces=easy_pieces, board=game.get_board())
+
     while run:
         clock.tick(FPS)
-
 
         new_board = bees_algorithm(
             board=game.get_board(), 
             game=game, 
-            max_iterations=20, 
-            population_size=50,
-            bee_moves=5
+            max_iterations=10, 
+            population_size=20,
+            bee_moves=20
         )
 
         if new_board is None:
-            print("Nie udało się rozwiązać sudoku")
+            print("Could not solved sudoku")
             run = False
             pygame.time.delay(10000)
             pygame.quit()
@@ -61,8 +63,6 @@ def main():
             pygame.time.delay(10000)
             run = False
 
-    pygame.quit()
-
 
 if __name__ == "__main__":
-    main()
+    solve_easy_sudoku()
